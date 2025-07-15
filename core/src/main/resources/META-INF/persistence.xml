@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
+    <persistence-unit name="JTAPU" transaction-type="JTA">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <jta-data-source>ydm_jdbc</jta-data-source>
+<!--        <non-jta-data-source>-->
+<!--            ydm_jdbc-->
+<!--        </non-jta-data-source>-->
+<!--        <properties>-->
+<!--            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>-->
+<!--            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ydm_db?useSSL=false"/>-->
+<!--            <property name="jakarta.persistence.jdbc.user" value="root"/>-->
+<!--            <property name="jakarta.persistence.jdbc.password" value="Deneth#@1234"/>-->
+<!--        </properties>-->
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.show_sql " value="true"/>
+            <property name="hibernate.transaction.jta.platform" value="org.hibernate.engine.transaction.jta.platform.internal.SunOneJtaPlatform"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+<!--            <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.jcache.internal.JCacheRegionFactory"/>-->
+<!--            <property name="hibernate.javax.cache.uri" value="ehcache.xml"/>-->
+<!--            <property name="hibernate.cache.use_second_level_cache" value="true"/>-->
+        </properties>
+    </persistence-unit>
+    
+</persistence>
