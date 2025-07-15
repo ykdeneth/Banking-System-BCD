@@ -33,8 +33,19 @@ public class Account implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
-    @OneToMany(mappedBy = "account")
-    private List<Loan> loan = new ArrayList<Loan>();
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Loan> loans = new ArrayList<>();
+
+    public Account() {
+    }
+
+    public Account(Integer id, String accountNo, double balance, User user, List<Loan> loans) {
+        this.id = id;
+        this.accountNo = accountNo;
+        this.balance = balance;
+        this.user = user;
+        this.loans = loans;
+    }
 
     public Integer getId() {
         return id;
@@ -66,5 +77,12 @@ public class Account implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+    public List<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
     }
 }

@@ -3,72 +3,69 @@ package com.ydm.j2ee.core.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Loan.findByAccountNo",
-                query = "SELECT l FROM Loan l WHERE l.account=:accountNo"),
-        @NamedQuery(name = "Loan.findByAccountAndEmail", query = "SELECT l FROM Loan l " +
-                "JOIN l.account a " +
-                "JOIN a.user u " +
-                "WHERE u.email = :email AND a.accountNo = :accno"),
-
-})
 @Table(name = "loan")
+@NamedQueries({
+        // Add NamedQuery if needed later
+})
 public class Loan implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
-    private String loanAmount;
+    private double amount;
 
-    @Column(nullable = false)
-    private Integer durationMonths;
+    @Enumerated(EnumType.STRING)
+    private LoanStatus status = LoanStatus.REQUESTED;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "accountNo",           // FK column in loan table
-            referencedColumnName = "accountNo"
-    )
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date requestedDate = new Date();
+
+    // Relationship to Account (many loans belong to one account)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
-    private double paidAmount;
-    private double payableAmount;
-    public Loan() {
+
+    public Loan() {}
+
+    public Loan(double amount, Account account) {
+        this.amount = amount;
+        this.account = account;
+        this.status = LoanStatus.REQUESTED;
+        this.requestedDate = new Date();
     }
 
-    public Loan(Integer id, String loanAmount, Integer durationMonths, Account account, double paidAmount, double payableAmount) {
-        this.id = id;
-        this.loanAmount = loanAmount;
-        this.durationMonths = durationMonths;
-        this.account = account;
-        this.paidAmount = paidAmount;
-        this.payableAmount = payableAmount;
-    }
+    // getters and setters
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public double getAmount() {
+        return amount;
     }
 
-    public String getLoanAmount() {
-        return loanAmount;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public void setLoanAmount(String loanAmount) {
-        this.loanAmount = loanAmount;
+    public LoanStatus getStatus() {
+        return status;
     }
 
-    public Integer getDurationMonths() {
-        return durationMonths;
+    public void setStatus(LoanStatus status) {
+        this.status = status;
     }
 
-    public void setDurationMonths(Integer durationMonths) {
-        this.durationMonths = durationMonths;
+    public Date getRequestedDate() {
+        return requestedDate;
+    }
+
+    public void setRequestedDate(Date requestedDate) {
+        this.requestedDate = requestedDate;
     }
 
     public Account getAccount() {
@@ -79,19 +76,12 @@ public class Loan implements Serializable {
         this.account = account;
     }
 
-    public double getPaidAmount() {
-        return paidAmount;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setPaidAmount(double paidAmount) {
-        this.paidAmount = paidAmount;
-    }
-
-    public double getPayableAmount() {
-        return payableAmount;
-    }
-
-    public void setPayableAmount(double payableAmount) {
-        this.payableAmount = payableAmount;
+    @Override
+    public String toString() {
+        return "Loan{" + "id=" + id + ", amount=" + amount + ", status=" + status + '}';
     }
 }

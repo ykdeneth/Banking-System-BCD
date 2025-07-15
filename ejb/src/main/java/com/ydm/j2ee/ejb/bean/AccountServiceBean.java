@@ -9,10 +9,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import com.ydm.j2ee.core.service.AccountService;
+import jakarta.persistence.TypedQuery;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Stateless
 //@TransactionManagement(TransactionManagementType.BEAN)
@@ -222,6 +224,16 @@ public class AccountServiceBean implements AccountService {
         }
     }
 
+    @Override
+    public Optional<Account> findByAccountNo(String accountNo) {
+        TypedQuery<Account> query = em.createNamedQuery("Account.findByAccountNo", Account.class);
+        query.setParameter("accountNo", accountNo);
+        try {
+            Account account = query.getSingleResult();
+            return Optional.of(account);
+        } catch (jakarta.persistence.NoResultException e) {
+            return Optional.empty();
+        }
 
-
+    }
 }

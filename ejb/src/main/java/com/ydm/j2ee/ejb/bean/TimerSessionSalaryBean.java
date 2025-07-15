@@ -18,11 +18,11 @@ public class TimerSessionSalaryBean {
     @EJB
     private AccountService accountService;
 
-//    @Schedule( dayOfMonth = "20", hour = "0", minute = "0", second = "0", persistent = false)
-    @Schedule( hour = "*", minute = "*", second = "*/5", persistent = false)
+
+    @Schedule( dayOfMonth = "20", hour = "0", minute = "0", second = "0", persistent = false)
     @Timeout
     public void doTask(){
 //       boolean b = accountService.addInterestToAllAccounts(0.2);
-        System.out.println("Interest added to all accounts.");
+        System.out.println("Salary added to all accounts.");
     }
 }

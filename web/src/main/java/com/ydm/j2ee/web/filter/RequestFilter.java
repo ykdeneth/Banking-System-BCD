@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/transfer","/createAcc","/timerSchedul","/transaction_history","/dailyTransaction", "/profile"})
+@WebFilter(urlPatterns = {"/transfer","/createAcc","/timerSchedul","/transaction_history","/dailyTransaction", "/profile","/applyLoan"})
 public class RequestFilter implements Filter {
 
     @Override
