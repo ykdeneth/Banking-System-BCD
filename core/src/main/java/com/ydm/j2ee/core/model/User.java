@@ -23,6 +23,10 @@ import java.util.List;
         @NamedQuery(
                 name = "UserAll.findByEmail",
                 query = "SELECT u FROM User u LEFT JOIN FETCH u.accounts WHERE u.email = :email"
+        ),
+        @NamedQuery(
+                name = "UserAll.getAllUsers",
+                query = "SELECT u FROM User u LEFT JOIN FETCH u.accounts WHERE u.userType != :userType"
         )
 
 })

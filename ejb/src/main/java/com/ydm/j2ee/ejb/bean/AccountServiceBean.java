@@ -72,9 +72,13 @@ public class AccountServiceBean implements AccountService {
             User managedUser = em.merge(user);
 
             account.setUser(managedUser);
+            if(user.getVerifyState().equals(VerifyState.NOT_VERIFIED_ACCOUNT)){
+                return false;
+            }else {
             em.persist(account);
             System.out.println("Created account " + account.getAccountNo()+ " with balance " + account.getBalance() + user.getEmail());
             return true;
+            }
         }
         return false;
 

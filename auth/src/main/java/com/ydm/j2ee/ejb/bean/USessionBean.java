@@ -1,15 +1,12 @@
 package com.ydm.j2ee.ejb.bean;
 
-import com.ydm.j2ee.core.model.Account;
-import com.ydm.j2ee.core.model.Status;
-import com.ydm.j2ee.core.model.VerifyState;
+import com.ydm.j2ee.core.model.*;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
-import com.ydm.j2ee.core.model.User;
 import com.ydm.j2ee.core.service.UService;
 
 import java.util.List;
@@ -50,7 +47,7 @@ public class USessionBean implements UService {
         em.merge(user);
     }
 
-    @RolesAllowed({"ADMIN","SUPER_ADMIN"})
+    @RolesAllowed({"ADMIN"})
     @Override
     public void deleteUser(User user) {
         em.remove(user);
@@ -98,6 +95,15 @@ public class USessionBean implements UService {
         return em.createNamedQuery("UserAll.findByEmail", User.class)
                 .setParameter("email", email)
                 .getResultList();
+    }
+
+    @RolesAllowed("ADMIN")
+    @Override
+    public List<User> allUsers() {
+        return em.createNamedQuery("UserAll.getAllUsers", User.class)
+                .setParameter("userType", UserType.ADMIN)
+                .getResultList();
+
     }
 
 }

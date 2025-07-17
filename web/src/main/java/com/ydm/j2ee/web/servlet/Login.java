@@ -1,5 +1,9 @@
 package com.ydm.j2ee.web.servlet;
 
+import com.ydm.j2ee.core.model.User;
+import com.ydm.j2ee.core.model.UserType;
+import com.ydm.j2ee.core.service.UService;
+import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.AuthenticationStatus;
 import jakarta.security.enterprise.SecurityContext;
@@ -18,6 +22,9 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
+
+    @EJB
+    UService uService;
 
     @Inject
     private SecurityContext securityContext;
@@ -45,7 +52,13 @@ public class Login extends HttpServlet {
             System.out.println("Authentication successful");
             HttpSession session = request.getSession();
             session.setAttribute("loggeduser", email);
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            User u = uService.getUserByEmail(email);
+            if (u.getUserType().equals(UserType.ADMIN)) {
+                response.sendRedirect(request.getContextPath() + "/admin/index.jsp");
+            }else {
+                response.sendRedirect(request.getContextPath() + "/user/index.jsp");
+            }
+
         } else {
             System.out.println("Authentication failed");
             throw new LoginFailedException("Invalid username or password");

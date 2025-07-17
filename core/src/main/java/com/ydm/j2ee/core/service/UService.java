@@ -16,4 +16,5 @@ public interface UService {
     boolean validate(String email, String password);
     boolean validAccount(String email, String accountNo);
     List<User> getUserByEmail2(String email);
+    List<User> allUsers();
 }
