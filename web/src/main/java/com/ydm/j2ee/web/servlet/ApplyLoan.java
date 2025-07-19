@@ -23,12 +23,13 @@ public class ApplyLoan extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String accountNo = request.getParameter("accountNo"); // must send accountNo param
         String amountStr = request.getParameter("amount");
-
+        String email = (String) request.getSession().getAttribute("loggeduser");
+        System.out.println(email);
         Response_DTO dto;
 
         try {
             double amount = Double.parseDouble(amountStr);
-            Loan loan = loanService.requestLoan(accountNo, amount);
+            Loan loan = loanService.requestLoan(accountNo, amount, email);
 
             Map<String, Object> content = new HashMap<>();
             content.put("id", loan.getId());

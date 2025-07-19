@@ -5,4 +5,5 @@ import com.ydm.j2ee.core.model.LoanStatus;
 
 public interface LoanApprovalService {
         Loan updateLoanStatus(Integer loanId, LoanStatus newStatus);
+        Loan getLoanDetails();
 }

@@ -85,4 +85,9 @@ public class Account implements Serializable {
     public void setLoans(List<Loan> loans) {
         this.loans = loans;
     }
+
+    @Override
+    public String toString() {
+        return "Account [id=" + id + ", accountNo=" + accountNo + ", balance=" + balance+", user=" + user + ", loans=" + loans + "]";
+    }
 }

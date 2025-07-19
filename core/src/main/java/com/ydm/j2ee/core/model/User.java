@@ -27,6 +27,14 @@ import java.util.List;
         @NamedQuery(
                 name = "UserAll.getAllUsers",
                 query = "SELECT u FROM User u LEFT JOIN FETCH u.accounts WHERE u.userType != :userType"
+        ),
+        @NamedQuery(
+                name = "UserAll.getAllUsersForLoan",
+                query = "SELECT u FROM User u LEFT JOIN FETCH u.accounts a LEFT JOIN FETCH a.loans"
+        ),
+        @NamedQuery(
+                name = "AllLoan.findAllUsersWithLoans",
+                query = "SELECT DISTINCT a.user FROM Loan l JOIN l.account a JOIN a.user"
         )
 
 })
@@ -161,6 +169,6 @@ public class User implements java.io.Serializable {
 
     @Override
     public String  toString() {
-        return "User [id=" + id + ", name="+name+", email="+email+"]";
+        return "User [id=" + id + ", name="+name+", email="+email+", accounts="+accounts +"]";
     }
 }

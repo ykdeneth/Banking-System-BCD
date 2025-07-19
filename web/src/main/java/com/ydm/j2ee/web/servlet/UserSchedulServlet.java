@@ -27,11 +27,11 @@ public class UserSchedulServlet extends HttpServlet {
         String reason = req.getParameter("reason");
 //        String type = req.getParameter("type");
 
-        int hour = Integer.parseInt(req.getParameter("hour"));
-        int minute = Integer.parseInt(req.getParameter("minute"));
-        int second = Integer.parseInt(req.getParameter("second"));
-
-        userSchedulTimerBean.createTransferTimer(hour, minute, second, sourceAccountNo, destinationAccountNo, amount, reason, String.valueOf(TransactionType.SCHEDULED));
+        int year = Integer.parseInt(req.getParameter("year"));
+        int month = Integer.parseInt(req.getParameter("month"));
+        int day = Integer.parseInt(req.getParameter("day"));
+        System.out.println(year + "-" + month + "-" + day);
+        userSchedulTimerBean.createTransferTimer(year, month, day, sourceAccountNo, destinationAccountNo, amount, reason, String.valueOf(TransactionType.SCHEDULED));
 
         resp.getWriter().write("Transfer scheduled successfully");
     }

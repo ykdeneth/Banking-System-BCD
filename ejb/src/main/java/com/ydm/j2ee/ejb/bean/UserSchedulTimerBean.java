@@ -24,11 +24,12 @@ public class UserSchedulTimerBean implements UserTimerSchedul {
     private TransferService transferService;
 
     @Override
-    public void createTimer(int hour, int minute, int second) {
+    public void createTimer(int year, int month, int day) {
         ScheduleExpression schedule = new ScheduleExpression()
-                .hour(hour)
-                .minute(minute)
-                .second(second);
+                .year(year)
+                .month(month)
+                .dayOfMonth(day);
+
 
         TimerConfig config = new TimerConfig();
         config.setPersistent(false);
@@ -37,11 +38,11 @@ public class UserSchedulTimerBean implements UserTimerSchedul {
     }
 
     @Override
-    public void createTransferTimer(int hour, int minute, int second, String sourceAccountNo, String destinationAccountNo, double amount, String reason, String type) {
+    public void createTransferTimer(int year, int month, int day, String sourceAccountNo, String destinationAccountNo, double amount, String reason, String type) {
         ScheduleExpression schedule = new ScheduleExpression()
-                .hour(hour)
-                .minute(minute)
-                .second(second);
+                .year(year)
+                .month(month)
+                .dayOfMonth(day);
 
         Map<String, Object> infoMap = new HashMap<>();
         infoMap.put("sourceAccountNo", sourceAccountNo);
@@ -57,6 +58,7 @@ public class UserSchedulTimerBean implements UserTimerSchedul {
         config.setInfo(infoJson);
 
         timerService.createCalendarTimer(schedule, config);
+        System.out.println("Transfer scheduled successfully");
 
     }
 

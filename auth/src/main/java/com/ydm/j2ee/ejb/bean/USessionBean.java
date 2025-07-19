@@ -3,6 +3,7 @@ package com.ydm.j2ee.ejb.bean;
 import com.ydm.j2ee.core.model.*;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJBAccessException;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -10,6 +11,8 @@ import jakarta.persistence.PersistenceContext;
 import com.ydm.j2ee.core.service.UService;
 
 import java.util.List;
+
+import static com.mysql.cj.conf.PropertyKey.logger;
 
 @Stateless
 public class USessionBean implements UService {
@@ -50,7 +53,15 @@ public class USessionBean implements UService {
     @RolesAllowed({"ADMIN"})
     @Override
     public void deleteUser(User user) {
-        em.remove(user);
+//        em.remove(user);
+        try {
+            em.remove(user);
+        } catch (EJBAccessException ex) {
+            // Log the event
+            System.out.println("Unauthorized loan approval attempt: " + ex.getMessage());
+            // Notify security team or display an error to the user
+        }
+
     }
 
     @Override
@@ -104,6 +115,23 @@ public class USessionBean implements UService {
                 .setParameter("userType", UserType.ADMIN)
                 .getResultList();
 
+    }
+
+    @Override
+    public boolean getUserById2(Long id) {
+
+        User user = em.find(User.class, id);
+        if (user.getStatus().equals(Status.ACTIVE)) {
+            user.setStatus(Status.INACTIVE);
+            em.merge(user);
+            return true;
+        }else if (user.getStatus().equals(Status.INACTIVE)) {
+            user.setStatus(Status.ACTIVE);
+            em.merge(user);
+            return true;
+        }
+
+        return false;
     }
 
 }

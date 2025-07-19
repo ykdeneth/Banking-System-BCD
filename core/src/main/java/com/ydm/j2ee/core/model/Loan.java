@@ -8,7 +8,15 @@ import java.util.Date;
 @Entity
 @Table(name = "loan")
 @NamedQueries({
-        // Add NamedQuery if needed later
+        @NamedQuery(
+                name = "Loan.findAllUsersWithLoans",
+                query = "SELECT DISTINCT a.user FROM Loan l JOIN l.account a JOIN a.user"
+        ),
+        @NamedQuery(
+                name = "Loan.findAllUsersWithLoansAndEmails",
+                query = "SELECT DISTINCT a.user FROM Loan l JOIN l.account a JOIN a.user u WHERE u.email=: email"
+        )
+
 })
 public class Loan implements Serializable {
 

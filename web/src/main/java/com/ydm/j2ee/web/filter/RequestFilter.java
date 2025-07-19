@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/transfer","/createAcc","/timerSchedul","/transaction_history","/dailyTransaction", "/profile","/applyLoan","/getallusers"})
+@WebFilter(urlPatterns = {"/transfer","/createAcc","/timerSchedul","/transaction_history","/dailyTransaction", "/profile","/applyLoan","/getallusers","/userStateChange","/loanUsers","/userLoanDetails"})
 public class RequestFilter implements Filter {
 
     @Override

@@ -1,5 +1,6 @@
 package com.ydm.j2ee.web.servlet;
 
+import com.ydm.j2ee.core.model.TransactionType;
 import com.ydm.j2ee.core.service.AccountService;
 import com.ydm.j2ee.core.service.UService;
 import jakarta.ejb.EJB;
@@ -38,7 +39,7 @@ public class Transfer extends HttpServlet {
         System.out.println("is has a valid account: " + validacc);
         if(validacc){
             transferService.
-                    transferAmount(sourceAccountNumber,destinationAccountNumber,Double.parseDouble(amount), reason, type);
+                    transferAmount(sourceAccountNumber,destinationAccountNumber,Double.parseDouble(amount), reason, String.valueOf(TransactionType.ON_TIME));
 //            System.out.println("transfer success");
 //            response.sendRedirect("index.jsp");
         }else {

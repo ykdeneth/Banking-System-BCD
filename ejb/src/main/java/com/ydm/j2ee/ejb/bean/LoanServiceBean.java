@@ -14,6 +14,7 @@ import jakarta.interceptor.Interceptors;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+import java.util.List;
 import java.util.Optional;
 
 @Stateless
@@ -28,19 +29,29 @@ public class LoanServiceBean implements LoanService {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Loan requestLoan(String accountNo, double amount) {
+    public Loan requestLoan(String accountNo, double amount, String email) {
         Account account = accountService.findByAccountNo(accountNo)
                 .orElseThrow(() -> new IllegalArgumentException("Account does not exist"));
+        List<Account> accounts = em.createNamedQuery("Account.findByAccountAndEmail", Account.class)
+                .setParameter("accountNo2", accountNo)
+                .setParameter("email", email)
+                .getResultList();
 
-        Loan loan = new Loan(amount, account);
-        // Persist loan (assuming using container-managed EntityManager injected in this bean)
-        System.out.println(loan.toString());
-        em.persist(loan);
+        if (accounts.isEmpty()) {
+            return null;
+        } else {
 
-        // Add loan to account's loan list (optional, managed by JPA)
-        account.getLoans().add(loan);
+            Loan loan = new Loan(amount, account);
+            // Persist loan (assuming using container-managed EntityManager injected in this bean)
+            System.out.println(loan.toString());
+            em.persist(loan);
 
-        return loan;
+            // Add loan to account's loan list (optional, managed by JPA)
+            account.getLoans().add(loan);
+
+            return loan;
+        }
+//        return null;
     }
 
     // @PersistenceContext EntityManager em; injected here normally

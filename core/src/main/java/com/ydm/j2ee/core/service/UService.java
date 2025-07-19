@@ -17,4 +17,5 @@ public interface UService {
     boolean validAccount(String email, String accountNo);
     List<User> getUserByEmail2(String email);
     List<User> allUsers();
+    boolean getUserById2(Long id);
 }

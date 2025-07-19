@@ -49,11 +49,12 @@ function renderUsers(users) {
             : '<em>No accounts</em>'
         }
       </td>
+     
       <td data-label="Change User Status">
-        <button class="status-btn" onclick="changeUserStatus(${user.id}, '${escapeHtml(user.status)}')">
-          ${user.status === 'ACTIVE' ? 'Deactivate' : 'Activate'}
-        </button>
-      </td>
+      <button class="status-btn" data-user-id="${user.id}">
+        ${user.status === 'ACTIVE' ? 'Deactivate' : 'Activate'}
+      </button>
+    </td>
       <td data-label="Create New Account">
 <!--        <button onclick="createNewAccount(${user.id})">New Account</button>-->
 ${createAccountButton}
@@ -61,6 +62,13 @@ ${createAccountButton}
     `;
 
         tbody.appendChild(tr);
+        const statusBtn = tr.querySelector('button.status-btn');
+        if (statusBtn) {
+            statusBtn.addEventListener('click', function() {
+                const userId = this.getAttribute('data-user-id');
+                changeUserStatus(userId);
+            });
+        }
     });
 
     document.getElementById('loading').style.display = 'none';
@@ -92,9 +100,32 @@ async function fetchUsers() {
 }
 
 // Button handlers (implement backend API calls accordingly)
-function changeUserStatus(userId) {
+async function changeUserStatus(userId) {
     // alert(`Clicked Change User Status for user id ${userId} (current status: ${currentStatus})`);
+    try {
+        const response = await fetch(`http://localhost:8080/bank-web/userStateChange?userId=${userId}`, {
+            credentials: 'same-origin'
+        });
 
+        if (!response.ok) {
+            throw new Error('HTTP error ' + response.status);
+        }else {
+            fetchUsers();
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.content || 'Failed to fetch users');
+        }else if(data.success){
+            fetchUsers();
+        }
+        fetchUsers();
+
+
+    } catch (error) {
+        document.getElementById('loading').textContent = 'Error loading users: ' + error.message;
+    }
 }
 
 function createNewAccount(email) {

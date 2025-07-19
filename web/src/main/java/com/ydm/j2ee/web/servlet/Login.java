@@ -53,6 +53,7 @@ public class Login extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("loggeduser", email);
             User u = uService.getUserByEmail(email);
+            System.out.println(session.getAttribute("loggeduser"));
             if (u.getUserType().equals(UserType.ADMIN)) {
                 response.sendRedirect(request.getContextPath() + "/admin/index.jsp");
             }else {

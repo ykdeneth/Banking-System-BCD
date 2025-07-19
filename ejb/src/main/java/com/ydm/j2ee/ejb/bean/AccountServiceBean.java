@@ -48,7 +48,7 @@ public class AccountServiceBean implements AccountService {
             Account account = em.createNamedQuery("Account.findByAccountNo", Account.class)
                     .setParameter("accountNo", accountNo)
                     .getSingleResult();
-            if (account.getBalance() >= amount) {
+            if (account.getBalance() >= amount && account.getUser().getStatus().equals(Status.ACTIVE)) {
                 account.setBalance(account.getBalance() - amount);
                 em.merge(account);
                 return true;

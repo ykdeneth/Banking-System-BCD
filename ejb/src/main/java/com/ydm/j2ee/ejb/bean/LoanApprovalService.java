@@ -30,4 +30,9 @@ public class LoanApprovalService implements com.ydm.j2ee.core.service.LoanApprov
 
         return loan;
     }
+
+    @Override
+    public Loan getLoanDetails() {
+        return null;
+    }
 }
